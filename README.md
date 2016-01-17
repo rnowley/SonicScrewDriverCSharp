@@ -1,2 +1,2 @@
 # SonicScrewDriver
-A tool for building mono C# projects
+A tool for building mono C# projects on Linux
