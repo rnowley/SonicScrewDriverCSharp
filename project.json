@@ -1,0 +1,21 @@
+{
+    "name": "SonicScrewDriver",
+    "version": "1.0.0",
+    "description": "A tool for building mono C# projects on Linux",
+    "references": [
+        { "name": "System" }
+    ],
+    "sourceFiles": [
+        "Mono/Options/Mono.Options-PCL.cs",
+		"Project/Command.cs",
+		"Project/CommandBuilder.cs",
+		"Project/ProjectConfiguration.cs",
+		"Project/Reference.cs",
+		"SonicScrewDriver.cs"
+    ],
+    "buildTarget": "exe",
+    "outputFilename": "ssdbt",
+    "sourceDirectory": "./src/",
+    "destinationDirectory": "./build/",
+    "libraryPath": []
+}
