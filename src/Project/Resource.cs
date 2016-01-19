@@ -1,12 +1,12 @@
 namespace SonicScrewDriver.Project {
 
-    public class Reference {
+    public class Resource {
 
-        public string Name {
+        public string Source {
             get; set;
         }
 
-        public string Path {
+        public string Destination {
             get; set;
         }
 

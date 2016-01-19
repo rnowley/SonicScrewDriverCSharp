@@ -19,8 +19,8 @@
     ],
     "resources": [
         {
-            "source": "project.json",
-            "destination": "project.json"
+            "source": "./project.json",
+            "destination": "./project.json"
         }
     ],
     "buildTarget": "exe",
