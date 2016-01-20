@@ -15,6 +15,7 @@
         "Project/CommandBuilder.cs",
         "Project/ProjectConfiguration.cs",
         "Project/Reference.cs",
+        "Project/Resource.cs",
         "SonicScrewDriver.cs"
     ],
     "resources": [

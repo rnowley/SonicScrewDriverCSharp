@@ -16,11 +16,23 @@ namespace SonicScrewDriver.Project {
             get; set;
         }
 
-        public string DestinationDirectory {
+        public List<Reference> References {
             get; set;
         }
 
-        public List<Reference> References {
+        public List<string> SourceFiles {
+            get; set;
+        }
+
+        public List<Resource> Resources {
+            get; set;
+        }
+
+        public string BuildTarget {
+            get; set;
+        }
+
+        public string OutputFilename {
             get; set;
         }
 
@@ -28,7 +40,23 @@ namespace SonicScrewDriver.Project {
             get; set;
         }
 
-        public List<string> SourceFiles {
+        public string DestinationDirectory {
+            get; set;
+        }
+
+        public List<string> LibraryPath {
+            get; set;
+        }
+
+        public List<string> PackageList {
+            get; set;
+        }
+
+        public int WarningLevel {
+            get; set;
+        }
+
+        public bool WarningsAsErrors {
             get; set;
         }
     }

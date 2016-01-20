@@ -22,7 +22,7 @@ namespace SonicScrewDriver {
             }
         }
 
-        protected static ProjectConfiguration DeserialiseProject(string projectJson) {
+        public static ProjectConfiguration DeserialiseProject(string projectJson) {
             var configuration = JsonConvert.DeserializeObject<ProjectConfiguration>(projectJson);
             return configuration;
         }
