@@ -40,6 +40,33 @@ namespace SonicScrewDriver {
             return CommandBuilder.BuildCommand(project);
         }
 
+        public static void EnsureDestinationDirectoryExists(string destinationDirectory) {
+            return;
+        }
+
+        public static void CopyReferences(ProjectConfiguration project, Command command) {
+
+            if(project.References == null || project.References.Count == 0) {
+                return;
+            }
+
+            var destinationDirectory = command.DestinationDirectory;
+
+            foreach(var reference in project.References) {
+
+                if(string.IsNullOrEmpty(reference.Path)) {
+                    continue;
+                }
+
+                var path = reference.Path;
+                var referenceName = reference.Name;
+                var fileExtension = ".dll";
+
+                File.Copy(string.Format("{0}{1}{2}", path, referenceName, fileExtension), 
+                          string.Format("{0}{1}{2}", destinationDirectory, referenceName, fileExtension));
+            }
+        }
+
     }
 
 }
