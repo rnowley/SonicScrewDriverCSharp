@@ -78,9 +78,14 @@ namespace SonicScrewDriver.Project {
                 return string.Empty;
             }
 
-            var referenceList = string.Join(",", configuration.References);
+            var referenceList = new List<string>();
+            foreach(var reference in configuration.References) {
+                referenceList.Add(reference.Name);
+            }
 
-            return string.Format("-r:{0}", referenceList);
+            var referenceString = string.Join(",", referenceList);
+
+            return string.Format("-r:{0}", referenceString);
         }
 
         public static string SetWarningLevel(ProjectConfiguration configuration) {

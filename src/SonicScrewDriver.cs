@@ -12,7 +12,10 @@ namespace SonicScrewDriver {
             var projectJson = File.ReadAllText("./project.json");
             ProjectConfiguration project = DeserialiseProject(projectJson);
             Command command = CreateCommand(project);
+            EnsureDestinationDirectoryExists(command);
             BuildProject(command);
+            CopyReferences(project, command);
+            CopyResources(project, command);
         }
 
         public static ProjectConfiguration DeserialiseProject(string projectJson) {
@@ -80,9 +83,41 @@ namespace SonicScrewDriver {
                 var fileExtension = ".dll";
 
                 File.Copy(string.Format("{0}{1}{2}", path, referenceName, fileExtension),
-                          string.Format("{0}{1}{2}", destinationDirectory, referenceName, fileExtension));
+                          string.Format("{0}{1}{2}", destinationDirectory, referenceName, fileExtension),
+                          true);
             }
 
+        }
+
+        public static void CopyResources(ProjectConfiguration project, Command command) {
+
+            if(project.Resources == null || project.Resources.Count == 0) {
+                return;
+            }
+
+            foreach(var resource in project.Resources) {
+                var sourceDirectory = Path.GetDirectoryName(resource.Source);
+                var destinationDirectory = Path.GetDirectoryName(resource.Destination);
+                Console.WriteLine("Source Directory: {0}", sourceDirectory);
+                Console.WriteLine("Destination Directory: {0}", destinationDirectory);
+
+                if(!Directory.Exists(string.Format("{0}{1}", command.DestinationDirectory, destinationDirectory))) {
+
+                    try {
+                        Directory.CreateDirectory(string.Format("{0}{1}", command.DestinationDirectory, destinationDirectory));
+                    }
+                    catch(Exception) {
+                        Console.WriteLine("Unable to create destination directory.");
+                        throw;
+                    }
+
+                }
+
+                File.Copy(string.Format("{0}{1}", command.SourceDirectory, resource.Source),
+                          string.Format("{0}{1}", command.DestinationDirectory, resource.Destination),
+                          true);
+
+            }
         }
 
     }

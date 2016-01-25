@@ -1,0 +1,32 @@
+{
+    "name": "nancyHello",
+    "version": "0.0.1",
+    "references": [
+        {
+            "name": "Nancy",
+            "path": "./lib/Nancy.1.4.1/lib/net40/"
+        },
+        {
+            "name": "Nancy.Hosting.Self",
+            "path": "./lib/Nancy.Hosting.Self.1.4.1/lib/net40/"
+        }
+    ],
+    "sourceFiles": [
+        "Program.cs"
+    ],
+    "resources": [
+        {
+            "source": "View/Index.html",
+            "destination": "View/Index.html"
+        }
+    ],
+    "buildType": "exe",
+    "languageVersion": 6,
+    "outputFilename": "nancySelfHost",
+    "sourceDirectory": "./src/",
+    "destinationDirectory": "./build/",
+    "libraryPath": [
+        "./lib/Nancy.1.4.1/lib/net40/",
+        "./lib/Nancy.Hosting.Self.1.4.1/lib/net40/"
+    ]
+}
