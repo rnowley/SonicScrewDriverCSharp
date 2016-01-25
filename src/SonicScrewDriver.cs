@@ -40,8 +40,25 @@ namespace SonicScrewDriver {
             return CommandBuilder.BuildCommand(project);
         }
 
-        public static void EnsureDestinationDirectoryExists(string destinationDirectory) {
-            return;
+        public static void EnsureDestinationDirectoryExists(Command command) {
+
+            if(string.IsNullOrEmpty(command.DestinationDirectory)) {
+                command.DestinationDirectory = "./build";
+            }
+
+            if(Directory.Exists(command.DestinationDirectory)) {
+                // Directory already exists.
+                return;
+            }
+
+            try {
+                Directory.CreateDirectory(command.DestinationDirectory);
+            }
+            catch(Exception) {
+                Console.WriteLine("Unable to create destination directory.");
+                throw;
+            }
+
         }
 
         public static void CopyReferences(ProjectConfiguration project, Command command) {
@@ -62,9 +79,10 @@ namespace SonicScrewDriver {
                 var referenceName = reference.Name;
                 var fileExtension = ".dll";
 
-                File.Copy(string.Format("{0}{1}{2}", path, referenceName, fileExtension), 
+                File.Copy(string.Format("{0}{1}{2}", path, referenceName, fileExtension),
                           string.Format("{0}{1}{2}", destinationDirectory, referenceName, fileExtension));
             }
+
         }
 
     }
