@@ -1,0 +1,14 @@
+{
+    "name": "HelloWorld",
+    "version": "0.0.1",
+    "sourceFiles": [
+        "Greeter.cs",
+        "HelloWorld.cs"
+    ],
+    "buildTarget": "exe",
+    "outputFilename": "helloWorld",
+    "sourceDirectory": "./src/",
+    "destinationDirectory": "./build/",
+    "warningLevel": 4,
+    "warningsAsErrors": false
+}

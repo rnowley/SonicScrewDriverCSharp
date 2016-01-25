@@ -2,10 +2,11 @@ namespace SonicScrewDriver.Project {
 
     public class Command {
         string commandName = "mcs";
-        string debugFlag = "debug";
+        string debugFlag = "-debug";
         string buildTarget = "exe";
         string sourceDirectory = "./src/";
         string destinationDirectory = "./build";
+        string references = "";
 
         public string CommandName {
 
@@ -50,7 +51,13 @@ namespace SonicScrewDriver.Project {
         }
 
         public string References {
-            get; set;
+            get {
+                return references;
+            }
+
+            set {
+                references = value;
+            }
         }
 
         public string SourceDirectory {
@@ -77,26 +84,22 @@ namespace SonicScrewDriver.Project {
 
         }
 
-        public string LibraryPath {
-            get; set;
-        }
+        public string LibraryPath { get; set; }
 
-        public string WarningLevel {
-            get; set;
-        }
+        public string PackageList { get; set; }
 
-        public string WarningsAsErrors {
-            get; set;
-        }
+        public string WarningLevel { get; set; }
 
-        public string GenerateCommand() {
-            var commandArray = new string[] {
-                CommandName, SourceFiles, DebugFlag, OutputFilename + GetFileSuffix(),
+        public string WarningsAsErrors { get; set; }
+
+        public string GenerateArgumentList() {
+            var argumentArray = new string[] {
+                SourceFiles, DebugFlag, OutputFilename + GetFileSuffix(),
                 BuildTarget, References, LibraryPath,
                 WarningLevel, WarningsAsErrors
             };
 
-            return string.Join(" ", commandArray);
+            return string.Join(" ", argumentArray);
         }
 
         public string GetFileSuffix() {

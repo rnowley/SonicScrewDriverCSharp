@@ -4,6 +4,7 @@
     "description": "A tool for building mono C# projects on Linux",
     "references": [
         { "name": "System" },
+        { "name": "System.Diagnostics" },
         {
             "name": "Newtonsoft.Json",
             "path": "./lib/Newtonsoft.Json.8.0.2/lib/net45/"

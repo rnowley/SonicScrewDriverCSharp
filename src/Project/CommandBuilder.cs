@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace SonicScrewDriver.Project {
 
@@ -11,11 +13,15 @@ namespace SonicScrewDriver.Project {
             command.DestinationDirectory = string.IsNullOrEmpty(configuration.DestinationDirectory)
                 ? command.DestinationDirectory : configuration.DestinationDirectory;
             command.OutputFilename = string.IsNullOrEmpty(configuration.OutputFilename)
-                ? string.Format("-out:{0}{1}", command.DestinationDirectory, configuration.OutputFilename)
-                : "";
+                ? ""
+                : string.Format("-out:{0}{1}", command.DestinationDirectory, configuration.OutputFilename);
             command.SourceFiles = ExtractSourceFileList(configuration, command.SourceDirectory);
             command.BuildTarget = ExtractBuildTarget(configuration);
             command.References = ExtractReferences(configuration);
+            command.LibraryPath = ExtractLibraryPath(configuration);
+            command.PackageList = ExtractPackageList(configuration);
+            command.WarningLevel = SetWarningLevel(configuration);
+            command.WarningsAsErrors = TreatWarningsAsErrors(configuration);
 
             return command;
         }
@@ -44,21 +50,76 @@ namespace SonicScrewDriver.Project {
 
         }
 
-        public static string ExtractReferences(ProjectConfiguration configuration) {
+        public static string ExtractLibraryPath(ProjectConfiguration configuration) {
 
-            if(configuration.References.Count == 0) {
+            if(configuration.LibraryPath == null || configuration.LibraryPath.Count == 0) {
                 return string.Empty;
             }
 
-            var referenceNames = new List<string>();
+            var libraryPath = string.Join(",", configuration.LibraryPath);
 
-            foreach(var reference in configuration.References) {
-                referenceNames.Add(reference.Name);
+            return string.Format("-lib:{0}", libraryPath);
+        }
+
+        public static string ExtractPackageList(ProjectConfiguration configuration) {
+
+            if(configuration.PackageList == null || configuration.PackageList.Count == 0) {
+                return string.Empty;
             }
 
-            var referenceList = string.Join(",", referenceNames);
+            var packageList = string.Join(",", configuration.PackageList);
+
+            return string.Format("-pkg:{0}", packageList);
+        }
+
+        public static string ExtractReferences(ProjectConfiguration configuration) {
+
+            if(configuration.References == null || configuration.References.Count == 0) {
+                return string.Empty;
+            }
+
+            var referenceList = string.Join(",", configuration.References);
 
             return string.Format("-r:{0}", referenceList);
+        }
+
+        public static string SetWarningLevel(ProjectConfiguration configuration) {
+
+            if(string.IsNullOrEmpty(configuration.WarningLevel)) {
+                return string.Empty;
+            }
+
+            int warningLevel;
+            bool isNumeric = int.TryParse(configuration.WarningLevel, out warningLevel);
+
+            if(!isNumeric) {
+                return string.Empty;
+            }
+
+            if(warningLevel >=0 && warningLevel <= 4) {
+                return string.Format("-warn:{0}", warningLevel);
+            }
+
+            Console.WriteLine("Warning: Invalid value for warning level ({0}), using the default value for the compiler.",
+                configuration.WarningLevel);
+            return string.Empty;
+        }
+
+        public static string TreatWarningsAsErrors(ProjectConfiguration configuration) {
+
+            if(string.IsNullOrEmpty(configuration.WarningsAsErrors)) {
+                return string.Empty;
+            }
+
+            bool warningsAsErrors;
+            bool isBoolean = bool.TryParse(configuration.WarningsAsErrors, out warningsAsErrors);
+
+            if(!isBoolean) {
+                Console.WriteLine("Warning: Invalid value for WarningsAsErrors, using the default value for the compiler.");
+                return string.Empty;
+            }
+
+            return warningsAsErrors ? "-warnaserror+" : "-warnaserror-";
         }
 
     }

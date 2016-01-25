@@ -52,11 +52,11 @@ namespace SonicScrewDriver.Project {
             get; set;
         }
 
-        public int WarningLevel {
+        public string WarningLevel {
             get; set;
         }
 
-        public bool WarningsAsErrors {
+        public string WarningsAsErrors {
             get; set;
         }
     }
