@@ -13,7 +13,22 @@ namespace SonicScrewDriver {
             ProjectConfiguration project = DeserialiseProject(projectJson);
             Command command = CreateCommand(project);
             EnsureDestinationDirectoryExists(command);
-            BuildProject(command);
+            var buildStatistics = BuildProject(command);
+            TimeSpan timeSpan = buildStatistics.ElapsedTime;
+            string elapsedTime;
+
+            if(buildStatistics.ExitCode != 0) {
+                Console.WriteLine("Build Failed.");
+                elapsedTime = string.Format("{0:00}:{1:00}:{2:00}.{3:000}", timeSpan.Hours, timeSpan.Minutes,
+                timeSpan.Seconds, timeSpan.Milliseconds / 100);
+                Console.WriteLine("Build took {0}", elapsedTime);
+                return;
+            }
+
+            Console.WriteLine("Build completed successfully.");
+            elapsedTime = string.Format("{0:00}:{1:00}:{2:00}.{3:000}", timeSpan.Hours, timeSpan.Minutes,
+                timeSpan.Seconds, timeSpan.Milliseconds / 100);
+            Console.WriteLine("Build took {0}", elapsedTime);
             CopyReferences(project, command);
             CopyResources(project, command);
         }
@@ -23,7 +38,7 @@ namespace SonicScrewDriver {
             return configuration;
         }
 
-        public static void BuildProject(Command command) {
+        public static BuildStatistics BuildProject(Command command) {
             Console.WriteLine(command.GenerateArgumentList());
             var processInfo = new ProcessStartInfo(command.CommandName);
             processInfo.Arguments = command.GenerateArgumentList();
@@ -34,9 +49,15 @@ namespace SonicScrewDriver {
             var process = new Process();
             process.EnableRaisingEvents = true;
             process.StartInfo = processInfo;
+            var stopWatch = Stopwatch.StartNew();
             process.Start();
             process.WaitForExit();
-            Console.WriteLine("Build Completed.");
+            stopWatch.Stop();
+
+            return new BuildStatistics {
+                ExitCode = process.ExitCode,
+                ElapsedTime = stopWatch.Elapsed
+            };
         }
 
         public static Command CreateCommand(ProjectConfiguration project) {

@@ -11,18 +11,13 @@
     ],
     "sourceFiles": [
         "Mono/Options/Mono.Options-PCL.cs",
+        "Project/BuildStatistics.cs",
         "Project/Command.cs",
         "Project/CommandBuilder.cs",
         "Project/ProjectConfiguration.cs",
         "Project/Reference.cs",
         "Project/Resource.cs",
         "SonicScrewDriver.cs"
-    ],
-    "resources": [
-        {
-            "source": "project.json",
-            "destination": "project.json"
-        }
     ],
     "buildTarget": "exe",
     "outputFilename": "ssdbt",
